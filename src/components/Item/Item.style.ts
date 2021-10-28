@@ -8,9 +8,17 @@ export const Wrapper = styled.div`
   border-radius: 10px;
   width: 100%;
   height: 100%;
+  align-items: center;
 
   button {
     border-radius: 0 0 10px 10px;
+    width: 100%;
+    color: #fff;
+    background-color: #3f51b5;
+  }
+
+  button:hover {
+    background-color: #f50057;
   }
 
   img {

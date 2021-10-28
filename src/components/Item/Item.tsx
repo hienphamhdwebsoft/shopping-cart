@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Button } from '@material-ui/core'
 // Types
 import { CartItemType } from '../../models'
@@ -17,7 +17,7 @@ export function Item({ item, handleAddToCart }: ItemProps) {
             <div>
                 <h3>{item.title}</h3>
                 <p>{item.description}</p>
-                <h3>{item.price}</h3>
+                <h3>$&nbsp;{item.price}</h3>
             </div>
             <Button variant='contained' onClick={() => handleAddToCart(item)}>Add to cart</Button>
         </Wrapper>
