@@ -1,14 +1,13 @@
+// Components
+import { Badge, Drawer, Grid, LinearProgress } from '@material-ui/core'
+import { AddShoppingCart } from '@material-ui/icons'
 import { useState } from 'react'
 import { useQuery } from 'react-query'
-// Components
-import { Grid, Drawer, LinearProgress, Badge } from '@material-ui/core'
-import { AddShoppingCart } from '@material-ui/icons'
 // Styles
-import { Wrapper, StyledButton } from "./App.style"
-import { CartItemType } from './models'
-import { Item } from './components/Item/Item'
+import { StyledButton, Wrapper } from "./App.style"
 import { Cart } from './components/Cart/Cart'
-import { CartItem } from './components/CartItem/CartItem'
+import { Item } from './components/Item/Item'
+import { CartItemType } from './models'
 
 
 const getProducts = async (): Promise<CartItemType[]> => await (await fetch('https://fakestoreapi.com/products')).json();
@@ -16,9 +15,9 @@ const getProducts = async (): Promise<CartItemType[]> => await (await fetch('htt
 const App = () => {
   const [cartOpen, setCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState([] as CartItemType[]);
-  const { data, isLoading, error } = useQuery<CartItemType[]>('prducts', getProducts);
+  const { data, isLoading, error } = useQuery<CartItemType[]>('products', getProducts);
 
-  const getTotalItems = (items: CartItemType[]) => items.reduce((total: number, item) => total + item.amount, 0);
+  const getTotalItems = (items: CartItemType[]) => items.reduce((ack: number, item) => ack + item.amount, 0);
 
   const handleAddToCart = (clickedItem: CartItemType) => {
     setCartItems(prev => {
@@ -37,10 +36,21 @@ const App = () => {
     });
   };
 
-  const handleRemoveFromCart = () => null;
+  const handleRemoveFromCart = (id: number) => {
+    setCartItems(prev =>
+      prev.reduce((ack, item) => {
+        if (item.id === id) {
+          if (item.amount === 1) return ack;
+          return [...ack, { ...item, amount: item.amount - 1 }];
+        } else {
+          return [...ack, item];
+        }
+      }, [] as CartItemType[])
+    );
+  };
 
   if (isLoading) return <LinearProgress />;
-  if (error) return <div>Somthing went wrong...</div>
+  if (error) return <div>Something went wrong...</div>
 
   return (
     <Wrapper>
